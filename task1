@@ -1,0 +1,8 @@
+SELECT p.CategoryID,
+       p.ProductID, 
+       p.ProductName, 
+       AVG(p.Price) as AvgPrice, 
+       RANK() OVER (PARTITION BY p.CategoryID ORDER by AVG(p.Price) DESC) as ProductRank
+FROM OrderDetails od
+join Products p on od.ProductID = p.ProductID
+GROUP by p.CategoryID, p.ProductID, p.ProductName;
