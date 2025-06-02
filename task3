@@ -1,0 +1,16 @@
+WITH CalcPrevCA as(
+  SELECT
+    month,
+    cluster,
+    credit_amount,
+    LAG(credit_amount) OVER (PARTITION BY cluster ORDER BY month) as PreviousCreditAmount
+  from Clusters
+)
+
+SELECT 
+  month,
+  cluster,
+  credit_amount,
+  PreviousCreditAmount,
+  COALESCE(credit_amount - PreviousCreditAmount, 0) as Difference
+FROM CalcPrevCA;
