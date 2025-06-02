@@ -1,0 +1,18 @@
+with CalcAvg AS(
+  Select 
+    month,
+    cluster,
+    AVG(credit_amount) as AvgCreditAmount
+  FROM Clusters
+  GROUP by month, cluster),
+
+  CalcMax as(
+  SELECT
+    month,
+    MAX(credit_amount) as MaxCreditAmount
+  FROM Clusters
+  GROUP BY month)
+
+SELECT a.month, a.cluster, a.AvgCreditAmount, m.MaxCreditAmount
+FROM CalcAvg a
+JOIN CalcMax m on m.month = a.month;
